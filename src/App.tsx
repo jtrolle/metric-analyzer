@@ -1,11 +1,14 @@
 import React from 'react';
+import { Container } from 'reactstrap';
+import CollapseCard from './components/CollapseCard';
+import ChartFilter from './components/ChartFilter';
 import Header from './Header';
-import {
-  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-} from 'recharts';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import metrics from './metrics.json';
+
+const dateMin = metrics[0].time;
+const dateMax = metrics[0].time;
 
 const memory = metrics.map(function({used, buff, cach, free, time}) {
   return {
@@ -29,51 +32,93 @@ const cpu = metrics.map(function ({ usr, sys, idl, wai, hiq, siq, time }) {
   }
 });
 
+const network = metrics.map(function ({ recv, send, time}) {
+  return {
+    recv,
+    send,
+    time
+  }
+});
+
+const disk = metrics.map(function ({ read, writ, files, inodes, time }) {
+  return {
+    files,
+    inodes,
+    read,
+    writ,
+    time
+  }
+});
+
+const CHART_WIDTH = 900;
+
+const colors = [
+  "#8884d8",
+  "#330066",
+  "#CC2288",
+  "#82ca9d",
+  "#3399CC",
+  "#EECC00",
+];
+
 const App: React.FC = () => {
   return (
     <div className="App">
       <Header/>
-      <BarChart
-        width={900}
-        height={300}
-        data={memory}
-        margin={{
-          top: 20, right: 30, left: 20, bottom: 5,
-        }}
-        barCategoryGap={0}
-        barGap={0}
-      >
-        <XAxis dataKey="time" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="used" stackId="a" fill="#8884d8" />
-        <Bar dataKey="buff" stackId="a" fill="#330066" />
-        <Bar dataKey="cach" stackId="a" fill="#CC2288" />
-        <Bar dataKey="free" stackId="a" fill="#82ca9d" />
-      </BarChart>
+      <Container>
 
-      <BarChart
-        width={900}
-        height={300}
-        data={cpu}
-        margin={{
-          top: 20, right: 30, left: 20, bottom: 5,
-        }}
-        barCategoryGap={0}
-        barGap={0}
-      >
-        <XAxis dataKey="time" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="usr" stackId="a" fill="#8884d8" />
-        <Bar dataKey="sys" stackId="a" fill="#330066" />
-        <Bar dataKey="idl" stackId="a" fill="#CC2288" />
-        <Bar dataKey="wai" stackId="a" fill="#82ca9d" />
-        <Bar dataKey="hiq" stackId="a" fill="#3399CC" />
-        <Bar dataKey="siq" stackId="a" fill="#EECC00" />
-      </BarChart>
+        <CollapseCard
+          title="Memory"
+          isOpen={true}
+        >
+          <ChartFilter
+            width={CHART_WIDTH}
+            data={memory}
+            colors={colors}
+            keys={['used', 'buff', 'cach', 'free']}
+            type='bar'
+          />
+        </CollapseCard>
+
+        <CollapseCard
+          title="CPU"
+          isOpen={true}
+        >
+          <ChartFilter
+            width={CHART_WIDTH}
+            data={cpu}
+            colors={colors}
+            keys={['usr', 'sys', 'idl', 'wai', 'hiq', 'siq',]}
+            type='bar'
+          />
+        </CollapseCard>
+
+        <CollapseCard
+          title="network"
+          isOpen={true}
+        >
+          <ChartFilter
+            width={CHART_WIDTH}
+            data={network}
+            colors={colors}
+            keys={['send', 'recv']}
+            type='line'
+          />
+        </CollapseCard>
+
+        <CollapseCard
+          title="Disk"
+          isOpen={true}
+        >
+          <ChartFilter
+            width={CHART_WIDTH}
+            data={disk}
+            colors={colors}
+            keys={['read', 'writ', 'files', 'inodes']}
+            type='line'
+          />
+        </CollapseCard>
+      </Container>
     </div>
   );
 }
