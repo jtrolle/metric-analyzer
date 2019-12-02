@@ -106,7 +106,7 @@ const ChartFilter: React.FC<ownProps> = ({ width, data, keys, colors, type, init
                                         type: "monotone"
                                     }
                                 // @ts-ignore
-                                return <MySerie animationDuration={0} key={key} dataKey={key} stackId="a" {...conf} />
+                                return <MySerie isAnimationActive={false} key={key} dataKey={key} stackId="a" {...conf} />
                             }
                         })
                     }
