@@ -1,0 +1,23 @@
+.main {
+    margin: 2rem 0;
+}
+.card-title {
+    margin-bottom: 0;
+}
+
+.card {
+    margin-bottom: 2rem;
+}
+
+.chart-legend::before {
+    content: "";
+    display: inline-block;
+    margin: 0 5px;
+    width: 20px;
+    border-bottom: 10px solid;
+}
+
+.chart-legend.line::before {
+    border-top: 6px transparent;
+    border-bottom: 4px solid;
+}

@@ -15,7 +15,7 @@ const memory = metrics.map(function({used, buff, cach, free, time}) {
     used: (used ? used : 0) / 1000000,
     buff: (buff ? buff : 0) / 1000000,
     cach: (cach ? cach : 0) / 1000000,
-//    free: (free ? free : 0) / 1000000,
+    free: (free ? free : 0) / 1000000,
     time,
   }
 });
@@ -24,7 +24,7 @@ const cpu = metrics.map(function ({ usr, sys, idl, wai, hiq, siq, time }) {
   return {
     usr,
     sys,
-//    idl,
+    idl,
     wai,
     hiq,
     siq,
@@ -65,7 +65,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Header/>
-      <Container>
+      <Container className="main" fluid>
 
         <CollapseCard
           title="Memory"
@@ -76,6 +76,7 @@ const App: React.FC = () => {
             data={memory}
             colors={colors}
             keys={['used', 'buff', 'cach', 'free']}
+            initialFilters={['used', 'buff', 'cach']}
             type='bar'
           />
         </CollapseCard>
@@ -89,6 +90,7 @@ const App: React.FC = () => {
             data={cpu}
             colors={colors}
             keys={['usr', 'sys', 'idl', 'wai', 'hiq', 'siq',]}
+            initialFilters={['usr', 'sys', 'wai', 'hiq', 'siq']}
             type='bar'
           />
         </CollapseCard>
